@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using GLTF.Schema.KHR_lights_punctual;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace GLTF.Schema
 {

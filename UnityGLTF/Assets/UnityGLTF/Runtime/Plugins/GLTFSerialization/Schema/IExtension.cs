@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace GLTF.Schema
 {
@@ -61,6 +62,11 @@ namespace GLTF.Schema
 		public JProperty Serialize()
 		{
 			return ExtensionData;
+		}
+
+		public string getDataAsJsonString()
+		{
+			return ExtensionData.ToString();
 		}
 	}
 

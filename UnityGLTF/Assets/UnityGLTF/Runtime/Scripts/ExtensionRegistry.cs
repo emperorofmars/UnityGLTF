@@ -6,13 +6,26 @@ using System.Threading.Tasks;
 
 namespace UnityGLTF
 {
-	public enum ExtensionType {
-		NODE, MESH, MATERIAL
+	public enum ExtensionType
+	{
+		NODE, MESH, TEXTURE, MATERIAL, ANIMATION
 	}
 
 	public interface IExtensionConstructor
 	{
 		Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode);
+	}
+
+	public class DefaultExtensionConstructor : IExtensionConstructor
+	{
+		public DefaultExtensionConstructor() {}
+
+		public Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode)
+		{
+			var component = nodeObj.AddComponent<DefaultComponent>();
+			component.json = ((DefaultExtension)extension).getDataAsJsonString();
+			return Task.CompletedTask;
+		}
 	}
 
 	public class ExtensionDefinition
@@ -32,6 +45,8 @@ namespace UnityGLTF
     public class ExtensionRegistry
     {
         private static Dictionary<ExtensionType, Dictionary<string, ExtensionDefinition>> _extensionRegistry = new Dictionary<ExtensionType, Dictionary<string, ExtensionDefinition>>();
+		
+		public static DefaultExtensionConstructor _defaultExtensionConstructor = new DefaultExtensionConstructor();
 
 		public static void registerExtension(ExtensionDefinition ext)
 		{
@@ -44,7 +59,8 @@ namespace UnityGLTF
 			}
 		}
 
-		public static bool hasExtension(ExtensionType type, string name) {
+		public static bool hasExtension(ExtensionType type, string name)
+		{
 			return _extensionRegistry.ContainsKey(type) && _extensionRegistry[type].ContainsKey(name);
 		}
 

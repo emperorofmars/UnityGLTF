@@ -770,6 +770,8 @@ namespace UnityGLTF
 			ConstructLights(nodeObj, node);
 
 			/// OAP CTF AVA
+			Func<NodeId, Task<GameObject>> getNode = async nodeId => await this.GetNode(nodeId.Id, cancellationToken);
+			
 			if(node.Extensions != null)
 			{
 				foreach(var extension in node.Extensions)
@@ -777,8 +779,11 @@ namespace UnityGLTF
 					if(ExtensionRegistry.hasExtension(ExtensionType.NODE, extension.Key))
 					{
 						var constructor = ExtensionRegistry.getConstructor(ExtensionType.NODE, extension.Key);
-						Func<NodeId, Task<GameObject>> getNode = async nodeId => await this.GetNode(nodeId.Id, cancellationToken);
 						await constructor.ConstructComponent(nodeObj, extension.Value, getNode);
+						continue;
+					} else {
+						await ExtensionRegistry._defaultExtensionConstructor.ConstructComponent(nodeObj, extension.Value, getNode);
+						continue;
 					}
 				}
 			}
