@@ -77,6 +77,7 @@ namespace oap.ctf.Extensions
 			source.sourceTransform = (await getNode(twist.source)).transform;
 
 			component.AddSource(source);
+			component.locked = true;
 			component.constraintActive = true;
 		}
 	}
