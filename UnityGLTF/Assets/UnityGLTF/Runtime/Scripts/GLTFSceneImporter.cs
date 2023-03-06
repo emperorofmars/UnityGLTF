@@ -41,6 +41,7 @@ namespace UnityGLTF
 
 		[NonSerialized]
 		public ILogger logger;
+		public bool AuthoringMode = false;
 	}
 
 	public enum AnimationMethod
@@ -769,9 +770,10 @@ namespace UnityGLTF
 
 			ConstructLights(nodeObj, node);
 
-			/// OAP CTF AVA
+			// Absolutely fucky. Function pointer for externally loaded extensions to use
 			Func<NodeId, Task<GameObject>> getNode = async nodeId => await this.GetNode(nodeId.Id, cancellationToken);
 			
+			// Load externally loaded extensions
 			if(node.Extensions != null)
 			{
 				foreach(var extension in node.Extensions)
@@ -787,6 +789,14 @@ namespace UnityGLTF
 					}
 				}
 			}
+
+			// GLTF Authoring: preserve original index of node
+			if(_options.AuthoringMode)
+			{
+				var authoringInfo = nodeObj.AddComponent<GLTFAuthoringInfo>();
+				authoringInfo.index = nodeIndex;
+			}
+
 
 			nodeObj.SetActive(true);
 

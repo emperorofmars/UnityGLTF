@@ -33,6 +33,8 @@ namespace UnityGLTF
 					.Select(n => ObjectNames.NicifyVariableName(n))
 					.ToArray();
 			}
+			EditorGUILayout.LabelField("GLTF Authoring", EditorStyles.boldLabel);
+			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(GLTFImporter._authoringMode)));
 			EditorGUILayout.LabelField("Meshes", EditorStyles.boldLabel);
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(GLTFImporter._removeEmptyRootObjects)));
 			EditorGUILayout.PropertyField(serializedObject.FindProperty(nameof(GLTFImporter._scaleFactor)));

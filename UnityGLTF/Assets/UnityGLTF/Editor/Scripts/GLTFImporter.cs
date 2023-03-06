@@ -65,6 +65,7 @@ namespace UnityGLTF
 	    }
 
 	    [Tooltip("Turn this off to create an explicit GameObject for the glTF scene. A scene root will always be created if there's more than one root node.")]
+		[SerializeField] internal bool _authoringMode = false;
         [SerializeField] internal bool _removeEmptyRootObjects = true;
         [SerializeField] internal float _scaleFactor = 1.0f;
         [SerializeField] internal int _maximumLod = 300;
@@ -513,6 +514,7 @@ namespace UnityGLTF
 				AnimationMethod = _importAnimations,
 				AnimationLoopTime = _animationLoopTime,
 				AnimationLoopPose = _animationLoopPose,
+				AuthoringMode = _authoringMode,
 			};
 			using (var stream = File.OpenRead(projectFilePath))
 			{
