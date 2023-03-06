@@ -64,8 +64,11 @@ namespace UnityGLTF
 		    }
 	    }
 
+		public static int afterImportCallback;
+
 	    [Tooltip("Turn this off to create an explicit GameObject for the glTF scene. A scene root will always be created if there's more than one root node.")]
 		[SerializeField] internal bool _authoringMode = false;
+		[SerializeField] internal bool _afterImportCallback = false;
         [SerializeField] internal bool _removeEmptyRootObjects = true;
         [SerializeField] internal float _scaleFactor = 1.0f;
         [SerializeField] internal int _maximumLod = 300;
