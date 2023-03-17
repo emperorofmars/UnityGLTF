@@ -2,14 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityGLTF;
 
-public class ava : ScriptableObject
+namespace oap
 {
+	public class ava : ScriptableObject
+	{
 
+	}
+
+	public class AVAImporter : AfterImportCallback
+	{
+		public void afterImport()
+		{
+			Debug.Log("AAAAAAAAAAAAA");
+		}
+	}
+
+
+
+	[InitializeOnLoad]
+	public class Register_UnityGLTF_afterimport_callback {
+		static Register_UnityGLTF_afterimport_callback()
+		{
+			GLTFImporter.afterImportCallback = new AVAImporter();
+		}
+	}
 }
-
-public interface AVAImporter
-{
-	
-}
-
