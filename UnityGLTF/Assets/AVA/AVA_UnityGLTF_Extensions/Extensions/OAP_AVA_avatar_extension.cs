@@ -60,8 +60,8 @@ namespace oap.ava.Extensions
 		}
 	}
 
-	public class Construct_Register_OAP_AVA_avatar : IExtensionConstructor {
-		public Construct_Register_OAP_AVA_avatar() {}
+	public class Construct_OAP_AVA_avatar : IExtensionConstructor {
+		public Construct_OAP_AVA_avatar() {}
 
 		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode) {
 			OAP_AVA_avatar_extension _extension = (OAP_AVA_avatar_extension)extension;
@@ -76,7 +76,7 @@ namespace oap.ava.Extensions
 	public class Register_OAP_AVA_avatar {
 		static Register_OAP_AVA_avatar()
 		{
-			var definition = new ExtensionDefinition(ExtensionType.NODE, new OAP_AVA_avatarFactory(), new Construct_Register_OAP_AVA_avatar());
+			var definition = new ExtensionDefinition(ExtensionType.NODE, new OAP_AVA_avatarFactory(), new Construct_OAP_AVA_avatar());
 			ExtensionRegistry.registerExtension(definition);
 		}
 	}

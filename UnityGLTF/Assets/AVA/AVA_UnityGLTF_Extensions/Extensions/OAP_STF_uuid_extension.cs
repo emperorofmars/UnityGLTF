@@ -56,8 +56,8 @@ namespace oap.stf.Extensions
 		}
 	}
 
-	public class Construct_Register_OAP_STF_uuid : IExtensionConstructor {
-		public Construct_Register_OAP_STF_uuid() {}
+	public class Construct_OAP_STF_uuid : IExtensionConstructor {
+		public Construct_OAP_STF_uuid() {}
 
 		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode) {
 			OAP_STF_uuid_extension _extension = (OAP_STF_uuid_extension)extension;
@@ -71,7 +71,7 @@ namespace oap.stf.Extensions
 	public class Register_OAP_STF_uuid {
 		static Register_OAP_STF_uuid()
 		{
-			var definition = new ExtensionDefinition(ExtensionType.NODE, new OAP_STF_uuidFactory(), new Construct_Register_OAP_STF_uuid());
+			var definition = new ExtensionDefinition(ExtensionType.NODE, new OAP_STF_uuidFactory(), new Construct_OAP_STF_uuid());
 			ExtensionRegistry.registerExtension(definition);
 		}
 	}

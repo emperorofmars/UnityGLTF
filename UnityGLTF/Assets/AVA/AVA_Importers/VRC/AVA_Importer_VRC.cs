@@ -11,6 +11,8 @@ namespace oap.ava
         public void run()
         {
             Debug.Log("Running AVA VRChat importer");
+
+            // Construct Prefab/Scene with a functioning VRChat avatar
         }
     }
     

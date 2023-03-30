@@ -62,8 +62,8 @@ namespace oap.aaaaa.Extensions
 		}
 	}
 
-	public class Construct_Register_OAP_STF_twist_constraint : IExtensionConstructor {
-		public Construct_Register_OAP_STF_twist_constraint() {}
+	public class Construct_OAP_STF_twist_constraint : IExtensionConstructor {
+		public Construct_OAP_STF_twist_constraint() {}
 
 		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode) {
 			OAP_STF_twist_constraint _extension = (OAP_STF_twist_constraint)extension;
@@ -86,7 +86,7 @@ namespace oap.aaaaa.Extensions
 	public class Register_OAP_STF_twist_constraint {
 		static Register_OAP_STF_twist_constraint()
 		{
-			var definition = new ExtensionDefinition(ExtensionType.NODE, new OAP_STF_twist_constraintFactory(), new Construct_Register_OAP_STF_twist_constraint());
+			var definition = new ExtensionDefinition(ExtensionType.NODE, new OAP_STF_twist_constraintFactory(), new Construct_OAP_STF_twist_constraint());
 			ExtensionRegistry.registerExtension(definition);
 		}
 	}
