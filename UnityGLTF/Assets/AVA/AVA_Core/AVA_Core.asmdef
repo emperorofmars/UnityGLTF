@@ -1,10 +1,6 @@
 {
     "name": "ava",
-    "references": [
-        "UnityGLTFEditor",
-        "UnityGLTFScripts",
-        "GLTFSerialization"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

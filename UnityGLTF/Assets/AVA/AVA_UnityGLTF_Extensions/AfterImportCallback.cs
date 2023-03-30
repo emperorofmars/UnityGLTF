@@ -1,21 +1,16 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityGLTF;
 
-namespace oap
+namespace oap.ava
 {
-	public class ava : ScriptableObject
-	{
-
-	}
-
 	public class AVAImporter : AfterImportCallback
 	{
 		public void afterImport()
 		{
-			Debug.Log("AAAAAAAAAAAAA");
+			RegisteredImporters.run();
 		}
 	}
 
