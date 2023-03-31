@@ -11,11 +11,18 @@ namespace oap.ava.importer.common
 	{
 		static Type[] SUPPORTED_TYPES = {typeof(OAP_AVA_avatar), typeof(OAP_STF_twist_constraint), typeof(SkinnedMeshRenderer)};
 
-		public static GameObject convertTree(GameObject rootAVA)
+		public static GameObject convertTree(GameObject rootAVA, Dictionary<Type, IComponentConverter> appConverters)
 		{
+			Dictionary<Type, IComponentConverter> converters = new Dictionary<Type, IComponentConverter>();
+			foreach(var item in appConverters) converters.Add(item.Key, item.Value);
+			foreach(var key in CommonConverters.getSupportedTypes())
+			{
+				if(!converters.ContainsKey(key)) converters.Add(key, CommonConverters.getConverter(key));
+			}
+
 			var nodeDict = new Dictionary<GameObject, GameObject>();
 			var targetRoot = deepcopyTree(rootAVA, rootAVA, null, nodeDict);
-			convertComponentsInTree(rootAVA, targetRoot, targetRoot, nodeDict);
+			convertComponentsInTree(rootAVA, targetRoot, targetRoot, nodeDict, converters);
 			return targetRoot;
 		}
 
@@ -25,13 +32,6 @@ namespace oap.ava.importer.common
 			nodeDict.Add(nodeAVA, targetNode);
 			targetNode.name = nodeAVA.name;
 
-			/*OAP_STF_uuid uuidAVA = nodeAVA.GetComponent<OAP_STF_uuid>();
-			if(uuidAVA)
-			{
-				OAP_STF_uuid uuidVRC = targetNode.AddComponent<OAP_STF_uuid>();
-				uuidVRC.uuid = uuidAVA.uuid;
-			}
-			*/
 			for(int i = 0; i < nodeAVA.transform.childCount; i++)
 			{
 				GameObject child = deepcopyTree(rootAVA, nodeAVA.transform.GetChild(i).gameObject, targetRoot != null ? targetRoot : targetNode, nodeDict);
@@ -40,7 +40,7 @@ namespace oap.ava.importer.common
 			return targetNode;
 		}
 
-		private static void convertComponentsInTree(GameObject rootAVA, GameObject targetRoot, GameObject targetNode, Dictionary<GameObject, GameObject> nodeDict)
+		private static void convertComponentsInTree(GameObject rootAVA, GameObject targetRoot, GameObject targetNode, Dictionary<GameObject, GameObject> nodeDict, Dictionary<Type, IComponentConverter> converters)
 		{
 			GameObject nodeAVA = null;
 			foreach(var item in nodeDict)
@@ -52,21 +52,21 @@ namespace oap.ava.importer.common
 				}
 			}
 
-			convertComponents(rootAVA, nodeAVA, targetRoot, targetNode, nodeDict);
+			convertComponents(rootAVA, nodeAVA, targetRoot, targetNode, nodeDict, converters);
 			for(int i = 0; i < targetNode.transform.childCount; i++)
 			{
-				convertComponentsInTree(rootAVA, targetRoot, targetNode.transform.GetChild(i).gameObject, nodeDict);
+				convertComponentsInTree(rootAVA, targetRoot, targetNode.transform.GetChild(i).gameObject, nodeDict, converters);
 			}
 		}
 
-		private static void convertComponents(GameObject rootAVA, GameObject nodeAVA, GameObject targetRoot, GameObject targetNode, Dictionary<GameObject, GameObject> nodeDict)
+		private static void convertComponents(GameObject rootAVA, GameObject nodeAVA, GameObject targetRoot, GameObject targetNode, Dictionary<GameObject, GameObject> nodeDict, Dictionary<Type, IComponentConverter> converters)
 		{
-			foreach(Type componentType in CommonConverters.getSupportedTypes())
+			foreach(var item in converters)
 			{
-				Component[] components = nodeAVA.GetComponents(componentType);
+				Component[] components = nodeAVA.GetComponents(item.Key);
 				foreach(Component component in components)
 				{
-					CommonConverters.getConverter(componentType).convert(component, targetNode, targetRoot, rootAVA, nodeDict);
+					item.Value.convert(component, targetNode, targetRoot, rootAVA, nodeDict);
 				}
 			}
 		}
