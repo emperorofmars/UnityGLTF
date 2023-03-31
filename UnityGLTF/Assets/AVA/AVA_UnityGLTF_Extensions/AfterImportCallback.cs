@@ -8,9 +8,9 @@ namespace oap.ava
 {
 	public class AVAImporter : AfterImportCallback
 	{
-		public void afterImport()
+		public void afterImport(GameObject go)
 		{
-			RegisteredImporters.run();
+			RegisteredImporters.run(go);
 		}
 	}
 

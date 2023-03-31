@@ -7,7 +7,7 @@ namespace oap.ava
 {
 	public interface IAVAImporter
 	{
-		void run();
+		void run(GameObject go);
 	}
 
 	public class RegisteredImporters
@@ -19,12 +19,12 @@ namespace oap.ava
 			importerList.Add(importer);
 		}
 
-		public static void run()
+		public static void run(GameObject go)
 		{
 			Debug.Log("Running AVA Importers");
 			foreach(IAVAImporter importer in importerList) // parallelize this
 			{
-				importer.run();
+				importer.run(go);
 			}
 		}
 	}

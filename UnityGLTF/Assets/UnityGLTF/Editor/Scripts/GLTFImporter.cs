@@ -179,8 +179,9 @@ namespace UnityGLTF
 					{
 						var parent = gltfScene;
 						var importName = parent.name;
+
 						gltfScene = gltfScene.transform.GetChild(0).gameObject;
-						gltfScene.name = importName; // root name is always name of the file anyways
+						gltfScene.name = sceneName; // root name is always name of the file anyways
 						t = gltfScene.transform;
 						t.parent = null; // To keep transform information in the new parent
 						DestroyImmediate(parent); // Get rid of the parent
@@ -499,7 +500,7 @@ namespace UnityGLTF
 #endif
 
 			if(afterImportCallback != null && _afterImportCallback == true)
-				afterImportCallback.afterImport();
+				afterImportCallback.afterImport(gltfScene);
 		}
 
 		private const string ColorSpaceDependency = nameof(GLTFImporter) + "_" + nameof(PlayerSettings.colorSpace);
