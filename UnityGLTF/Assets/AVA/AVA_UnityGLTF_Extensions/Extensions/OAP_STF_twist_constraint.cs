@@ -50,7 +50,7 @@ namespace oap.stf.Extensions
 			{
 				var extension = new OAP_STF_twist_constraint_extension();
 
-				JToken source_uuid = extensionToken.Value["source"];
+				JToken source_uuid = extensionToken.Value["source_uuid"];
 				JToken weight = extensionToken.Value[nameof(OAP_STF_twist_constraint_extension.weight)];
 
 				extension.source_uuid = source_uuid.Value<string>();
