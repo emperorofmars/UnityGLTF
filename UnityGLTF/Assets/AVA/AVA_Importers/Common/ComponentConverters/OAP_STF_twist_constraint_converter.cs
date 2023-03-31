@@ -1,4 +1,5 @@
 
+#if UNITY_EDITOR
 
 using System.Collections.Generic;
 using oap.stf.Components;
@@ -36,3 +37,5 @@ namespace oap.ava.importer.common
 		}
 	}
 }
+
+#endif

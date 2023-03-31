@@ -1,10 +1,11 @@
 
+#if UNITY_EDITOR
+
 using oap.stf.Components;
 using UnityEngine;
 
 namespace oap.ava.importer.common
 {
-
 	public class TreeUtils
 	{
 		public static GameObject findByUUID(GameObject go, string uuid)
@@ -25,5 +26,6 @@ namespace oap.ava.importer.common
 			return null;
 		}
 	}
-
 }
+
+#endif

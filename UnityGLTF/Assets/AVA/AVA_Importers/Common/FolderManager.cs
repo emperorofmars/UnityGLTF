@@ -1,4 +1,6 @@
 
+#if UNITY_EDITOR
+
 using UnityEditor;
 
 namespace oap.ava.importer.common
@@ -13,3 +15,5 @@ namespace oap.ava.importer.common
 		}
 	}
 }
+
+#endif

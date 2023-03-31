@@ -1,3 +1,6 @@
+
+#if UNITY_EDITOR
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -30,6 +33,7 @@ namespace oap.ava.importer.vrc
 			AssetDatabase.DeleteAsset(FolderManager.AVA_IMPORT_FOLDER + "/" + IMPORT_FOLDER_VRC + "/" + go.name + ".prefab");
 
 			GameObject root = ConvertTree.convertTree(go, converters);
+
 			PrefabUtility.SaveAsPrefabAsset(root, FolderManager.AVA_IMPORT_FOLDER + "/" + IMPORT_FOLDER_VRC + "/" + go.name + ".prefab");
 			DestroyImmediate(root);
 		}
@@ -65,3 +69,5 @@ namespace oap.ava.importer.vrc
 		}
 	}
 }
+
+#endif

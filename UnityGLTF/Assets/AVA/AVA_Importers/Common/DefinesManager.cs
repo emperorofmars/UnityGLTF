@@ -1,5 +1,7 @@
 // Taken from: https://github.com/rurre/PumkinsAvatarTools/blob/master/Editor/Dependencies/ScriptDefinesManager.cs
 
+#if UNITY_EDITOR
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -128,3 +130,5 @@ namespace oap.ava.importer.common
         }
     }
 }
+
+#endif

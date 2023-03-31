@@ -1,3 +1,6 @@
+
+#if UNITY_EDITOR
+
 using System;
 using Newtonsoft.Json.Linq;
 using GLTF.Schema;
@@ -83,3 +86,5 @@ namespace oap.stf.Extensions
 		}
 	}
 }
+
+#endif

@@ -1,3 +1,5 @@
+
+#if UNITY_EDITOR
 #if VRCSDK3_FOUND
 
 using System.Collections.Generic;
@@ -6,6 +8,7 @@ using oap.ava.importer.common;
 using oap.stf.Components;
 using UnityEditor;
 using UnityEngine;
+using VRC.SDK3.Avatars.Components;
 
 namespace oap.ava.importer.vrc
 {
@@ -13,6 +16,8 @@ namespace oap.ava.importer.vrc
     {
         public void convert(Component component, GameObject target, GameObject root, GameObject rootAVA, Dictionary<GameObject, GameObject> nodeDict)
         {
+			var animator = target.AddComponent<Animator>();
+			var avatarDescriptor = target.AddComponent<VRCAvatarDescriptor>();
         }
     }
 
@@ -26,4 +31,5 @@ namespace oap.ava.importer.vrc
 	}
 }
 
+#endif
 #endif
