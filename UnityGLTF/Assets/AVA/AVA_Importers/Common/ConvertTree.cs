@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using oap.ava.Components;
 using oap.stf.Components;
 using UnityEngine;
+using UnityGLTF;
 
 namespace oap.ava.importer.common
 {
@@ -21,55 +22,81 @@ namespace oap.ava.importer.common
 			{
 				if(!converters.ContainsKey(key)) converters.Add(key, CommonConverters.getConverter(key));
 			}
-
-			var nodeDict = new Dictionary<GameObject, GameObject>();
-			var targetRoot = deepcopyTree(rootAVA, rootAVA, null, nodeDict);
-			convertComponentsInTree(rootAVA, targetRoot, targetRoot, nodeDict, converters);
+			var targetRoot = Instantiate(rootAVA);
+			removeTrash(targetRoot);
+			convertComponents(targetRoot, targetRoot, converters);
+			cleanupComponents(targetRoot, targetRoot, converters);
 			return targetRoot;
 		}
-
-		private static GameObject deepcopyTree(GameObject rootAVA, GameObject nodeAVA, GameObject targetRoot, Dictionary<GameObject, GameObject> nodeDict)
+		
+		private static void removeTrash(GameObject node)
 		{
-			GameObject targetNode = new GameObject();
-			nodeDict.Add(nodeAVA, targetNode);
-			targetNode.name = nodeAVA.name;
-
-			for(int i = 0; i < nodeAVA.transform.childCount; i++)
+			if(node.GetComponent<OAP_trash>() != null)
 			{
-				GameObject child = deepcopyTree(rootAVA, nodeAVA.transform.GetChild(i).gameObject, targetRoot != null ? targetRoot : targetNode, nodeDict);
-				child.transform.parent = targetNode.transform;
-			}
-			return targetNode;
-		}
-
-		private static void convertComponentsInTree(GameObject rootAVA, GameObject targetRoot, GameObject targetNode, Dictionary<GameObject, GameObject> nodeDict, Dictionary<Type, IComponentConverter> converters)
-		{
-			GameObject nodeAVA = null;
-			foreach(var item in nodeDict)
-			{
-				if(item.Value == targetNode)
+				var children = new List<GameObject>();
+				for(int i = 0; i < node.transform.childCount; i++)
 				{
-					nodeAVA = item.Key;
-					break;
+					if(node.transform.parent != null)
+					{
+						var child = node.transform.GetChild(i).gameObject;
+						child.transform.SetParent(node.transform.parent.transform);
+						children.Add(child);
+						i--;
+					}
+				}
+				DestroyImmediate(node);
+				foreach(var childchild in children)
+				{
+					removeTrash(childchild);
 				}
 			}
-
-			convertComponents(rootAVA, nodeAVA, targetRoot, targetNode, nodeDict, converters);
-			for(int i = 0; i < targetNode.transform.childCount; i++)
+			else
 			{
-				convertComponentsInTree(rootAVA, targetRoot, targetNode.transform.GetChild(i).gameObject, nodeDict, converters);
+				for(int i = 0; i < node.transform.childCount; i++)
+				{
+					removeTrash(node.transform.GetChild(i).gameObject);
+				}
 			}
+			return;
 		}
 
-		private static void convertComponents(GameObject rootAVA, GameObject nodeAVA, GameObject targetRoot, GameObject targetNode, Dictionary<GameObject, GameObject> nodeDict, Dictionary<Type, IComponentConverter> converters)
+		private static void convertComponents(GameObject node, GameObject root, Dictionary<Type, IComponentConverter> converters)
 		{
 			foreach(var item in converters)
 			{
-				Component[] components = nodeAVA.GetComponents(item.Key);
+				Component[] components = node.GetComponents(item.Key);
 				foreach(Component component in components)
 				{
-					item.Value.convert(component, targetNode, targetRoot, rootAVA, nodeDict);
+					item.Value.convert(node, root, component);
 				}
+			}
+			for(int i = 0; i < node.transform.childCount; i++)
+			{
+				convertComponents(node.transform.GetChild(i).gameObject, root, converters);
+			}
+		}
+
+		private static void cleanupComponents(GameObject node, GameObject root, Dictionary<Type, IComponentConverter> converters)
+		{
+			foreach(var item in converters)
+			{
+				if(node.GetComponent(item.Key) != null && item.Value.cleanup())
+				{
+					Debug.Log(item.Key);
+					DestroyImmediate(node.GetComponent(item.Key));
+				}
+			}
+			if(node.GetComponent<OAP_STF_uuid>() != null)
+			{
+				DestroyImmediate(node.GetComponent<OAP_STF_uuid>());
+			}
+			if(node.GetComponent<DefaultComponent>() != null)
+			{
+				DestroyImmediate(node.GetComponent<DefaultComponent>());
+			}
+			for(int i = 0; i < node.transform.childCount; i++)
+			{
+				cleanupComponents(node.transform.GetChild(i).gameObject, root, converters);
 			}
 		}
 	}

@@ -11,17 +11,14 @@ namespace oap.ava.importer.common
 {
     public class SkinnedMeshRenderer_converter : IComponentConverter
     {
-        public void convert(Component component, GameObject target, GameObject root, GameObject rootAVA, Dictionary<GameObject, GameObject> nodeDict)
-        {
-			SkinnedMeshRenderer original = (SkinnedMeshRenderer)component;
-			var c = target.AddComponent<SkinnedMeshRenderer>();
-			ComponentUtility.CopyComponent(original);
-            ComponentUtility.PasteComponentValues(c);
+		public bool cleanup()
+		{
+			return false;
+		}
 
-			Debug.Log("BBBBBBBBBBBBBBBBBBBBBBB");
-			Debug.Log(original.sharedMesh);
-			Debug.Log(AssetDatabase.GetAssetPath(original.sharedMesh));
-			Debug.Log(AssetDatabase.GetAssetPath(original.GetInstanceID()));
+		public void convert(GameObject node, GameObject root, Component originalComponent)
+        {
+			// handle custom material system
         }
     }
 

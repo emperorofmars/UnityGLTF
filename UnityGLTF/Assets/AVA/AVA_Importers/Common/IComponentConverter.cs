@@ -9,7 +9,8 @@ namespace oap.ava.importer.common
 {
 	public interface IComponentConverter
 	{
-		void convert(Component component, GameObject target, GameObject root, GameObject rootAVA, Dictionary<GameObject, GameObject> nodeDict);
+		void convert(GameObject node, GameObject root, Component originalComponent);
+		bool cleanup();
 	}
 
 	public class CommonConverters

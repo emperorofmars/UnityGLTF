@@ -14,10 +14,15 @@ namespace oap.ava.importer.vrc
 {
     public class OAP_AVA_avatar_converter : IComponentConverter
     {
-        public void convert(Component component, GameObject target, GameObject root, GameObject rootAVA, Dictionary<GameObject, GameObject> nodeDict)
+		public bool cleanup()
+		{
+			return true;
+		}
+		
+        public void convert(GameObject node, GameObject root, Component originalComponent)
         {
-			var animator = target.AddComponent<Animator>();
-			var avatarDescriptor = target.AddComponent<VRCAvatarDescriptor>();
+			var animator = node.AddComponent<Animator>();
+			var avatarDescriptor = node.AddComponent<VRCAvatarDescriptor>();
         }
     }
 
