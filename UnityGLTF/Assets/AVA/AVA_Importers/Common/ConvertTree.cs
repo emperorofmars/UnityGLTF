@@ -22,15 +22,25 @@ namespace oap.ava.importer.common
 			{
 				if(!converters.ContainsKey(key)) converters.Add(key, CommonConverters.getConverter(key));
 			}
-			var targetRoot = Instantiate(rootAVA);
+			GameObject targetRoot;
+			if(rootAVA.transform.childCount == 1)
+			{
+				targetRoot = Instantiate(rootAVA.transform.GetChild(0).gameObject);
+			}
+			else
+			{
+				targetRoot = Instantiate(rootAVA);
+			}
+
 			removeTrash(targetRoot);
 			convertComponents(targetRoot, targetRoot, converters);
 			cleanupComponents(targetRoot, targetRoot, converters);
 			return targetRoot;
 		}
 		
-		private static void removeTrash(GameObject node)
+		private static bool removeTrash(GameObject node)
 		{
+			var self_removed = false;
 			if(node.GetComponent<OAP_trash>() != null)
 			{
 				var children = new List<GameObject>();
@@ -45,6 +55,7 @@ namespace oap.ava.importer.common
 					}
 				}
 				DestroyImmediate(node);
+				self_removed = true;
 				foreach(var childchild in children)
 				{
 					removeTrash(childchild);
@@ -54,10 +65,10 @@ namespace oap.ava.importer.common
 			{
 				for(int i = 0; i < node.transform.childCount; i++)
 				{
-					removeTrash(node.transform.GetChild(i).gameObject);
+					if(removeTrash(node.transform.GetChild(i).gameObject)) i--;
 				}
 			}
-			return;
+			return self_removed;
 		}
 
 		private static void convertComponents(GameObject node, GameObject root, Dictionary<Type, IComponentConverter> converters)
