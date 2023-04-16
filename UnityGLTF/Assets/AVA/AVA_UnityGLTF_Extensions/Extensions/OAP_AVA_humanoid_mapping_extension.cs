@@ -36,14 +36,14 @@ namespace oap.ava.Extensions
 			jo.Add(mappings_jo);
 			foreach(var mapping in mappings)
 			{
-				mappings_jo.Add(new JProperty(mapping.Key, mapping.Value));
+				mappings_jo.Add(new JProperty(mapping.bone, mapping.uuid));
 			}
 
 			return jProperty;
 		}
 
 		public String locomotion_type;
-		public Dictionary<string, string> mappings;
+		public List<BoneMappingPair> mappings = new List<BoneMappingPair>();
 	}
 
 	public class OAP_AVA_humanoid_mappingFactory : ExtensionFactory
@@ -63,18 +63,17 @@ namespace oap.ava.Extensions
 				JToken locomotion_type = extensionToken.Value["locomotion-type"];
 				extension.locomotion_type = locomotion_type.Value<String>();
 
-				extension.mappings = new Dictionary<string, string>();
+				extension.mappings = new List<BoneMappingPair>();
 				JObject mappings = (JObject)JToken.ReadFrom(extensionToken.Value["mappings"].CreateReader());
 				foreach(JToken child in mappings.Children())
 				{
 					if (child.Type != JTokenType.Property) throw new GLTFParseException("FML");
 					JProperty childAsJProperty = (JProperty)child;
-					extension.mappings.Add(childAsJProperty.Name, childAsJProperty.Value.Value<String>());
+					extension.mappings.Add(new BoneMappingPair(childAsJProperty.Name, childAsJProperty.Value.Value<String>()));
 				}
 
 				return extension;
 			}
-
 			return null;
 		}
 	}

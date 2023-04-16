@@ -93,7 +93,6 @@ namespace oap.ava.importer.common
 			{
 				if(node.GetComponent(item.Key) != null && item.Value.cleanup())
 				{
-					Debug.Log(item.Key);
 					DestroyImmediate(node.GetComponent(item.Key));
 				}
 			}
