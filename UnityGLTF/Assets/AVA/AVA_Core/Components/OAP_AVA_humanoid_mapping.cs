@@ -88,10 +88,26 @@ namespace oap.ava.Components
 			}
 		}
 
-		public string translateHumanoidAVAtoUnity(string avaName)
+#if UNITY_EDITOR
+		public string translateHumanoidAVAtoUnity(string avaName, string locomotion_type)
 		{
-			if(translations[avaName] != null) return translations[avaName];
-			return avaName;
+			if(locomotion_type == "1")
+			{
+				switch(avaName)
+				{
+					case "ToesLeft":
+						return translations["FootLeft"];
+					case "ToesRight":
+						return translations["FootRight"];
+					case "FootLeft":
+						return null;
+					case "FootRight":
+						return null;
+				}
+			}
+			if(avaName == "Jaw") return null;
+			return translations[avaName];
 		}
+#endif
 	}
 }

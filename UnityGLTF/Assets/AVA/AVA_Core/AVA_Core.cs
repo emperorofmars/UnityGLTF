@@ -20,6 +20,8 @@ namespace oap.ava
 			importerList.Add(importer);
 		}
 
+#if UNITY_EDITOR
+
 		public static void run(GameObject go)
 		{
 			Debug.Log("Running AVA Importers");
@@ -29,8 +31,7 @@ namespace oap.ava
 				importer.run(go);
 			}
 		}
-
-#if UNITY_EDITOR
+		
 		[MenuItem("AVA/run")]
 		public static void runManual()
 		{

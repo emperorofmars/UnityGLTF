@@ -34,7 +34,7 @@ namespace oap.ava.importer.common
 			foreach(var mapping in mappings)
 			{
 				mapping.uuid = TreeUtils.findByUUID(root, mapping.uuid).name;
-				mapping.bone = component.translateHumanoidAVAtoUnity(mapping.bone);
+				mapping.bone = component.translateHumanoidAVAtoUnity(mapping.bone, component.locomotion_type);
 			}
 
 			var humanDescription = new HumanDescription
@@ -42,7 +42,7 @@ namespace oap.ava.importer.common
 				human = mappings.FindAll(mapping => mapping.bone != null && mapping.bone.Length > 0 && mapping.uuid != null && mapping.uuid.Length > 0).Select(mapping => 
 				{
 					var bone = new HumanBone {humanName = mapping.bone, boneName = mapping.uuid};
-					//Debug.Log(bone.humanName + " : " + bone.boneName);
+					Debug.Log(bone.humanName + " : " + bone.boneName);
 					bone.limit.useDefaultValues = true;
 					return bone;
 				}).ToArray()
