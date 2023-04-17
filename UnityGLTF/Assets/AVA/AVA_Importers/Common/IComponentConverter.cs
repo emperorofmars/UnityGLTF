@@ -9,7 +9,7 @@ namespace oap.ava.importer.common
 {
 	public interface IComponentConverter
 	{
-		void convert(GameObject node, GameObject root, Component originalComponent);
+		void convert(GameObject node, GameObject root, Component originalComponent, string assetName);
 		bool cleanup();
 	}
 

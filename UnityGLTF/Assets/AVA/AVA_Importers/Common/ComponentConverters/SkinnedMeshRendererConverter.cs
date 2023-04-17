@@ -16,7 +16,7 @@ namespace oap.ava.importer.common
 			return false;
 		}
 
-		public void convert(GameObject node, GameObject root, Component originalComponent)
+		public void convert(GameObject node, GameObject root, Component originalComponent, string assetName)
         {
 			// handle custom material system
         }

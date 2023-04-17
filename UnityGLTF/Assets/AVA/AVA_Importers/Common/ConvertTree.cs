@@ -14,7 +14,7 @@ namespace oap.ava.importer.common
 	{
 		static Type[] SUPPORTED_TYPES = {typeof(OAP_AVA_avatar), typeof(OAP_STF_twist_constraint), typeof(SkinnedMeshRenderer)};
 
-		public static GameObject convertTree(GameObject rootAVA, Dictionary<Type, IComponentConverter> appConverters)
+		public static GameObject convertTree(GameObject rootAVA, Dictionary<Type, IComponentConverter> appConverters, string assetName)
 		{
 			Dictionary<Type, IComponentConverter> converters = new Dictionary<Type, IComponentConverter>();
 			foreach(var item in appConverters) converters.Add(item.Key, item.Value);
@@ -23,17 +23,11 @@ namespace oap.ava.importer.common
 				if(!converters.ContainsKey(key)) converters.Add(key, CommonConverters.getConverter(key));
 			}
 			GameObject targetRoot;
-			if(rootAVA.transform.childCount == 1)
-			{
-				targetRoot = Instantiate(rootAVA.transform.GetChild(0).gameObject);
-			}
-			else
-			{
-				targetRoot = Instantiate(rootAVA);
-			}
+			if(rootAVA.transform.childCount == 1) targetRoot = Instantiate(rootAVA.transform.GetChild(0).gameObject);
+			else targetRoot = Instantiate(rootAVA);
 
 			removeTrash(targetRoot);
-			convertComponents(targetRoot, targetRoot, converters);
+			convertComponents(targetRoot, targetRoot, converters, assetName);
 			cleanupComponents(targetRoot, targetRoot, converters);
 			return targetRoot;
 		}
@@ -71,19 +65,19 @@ namespace oap.ava.importer.common
 			return self_removed;
 		}
 
-		private static void convertComponents(GameObject node, GameObject root, Dictionary<Type, IComponentConverter> converters)
+		private static void convertComponents(GameObject node, GameObject root, Dictionary<Type, IComponentConverter> converters, string assetName)
 		{
 			foreach(var item in converters)
 			{
 				Component[] components = node.GetComponents(item.Key);
 				foreach(Component component in components)
 				{
-					item.Value.convert(node, root, component);
+					item.Value.convert(node, root, component, assetName);
 				}
 			}
 			for(int i = 0; i < node.transform.childCount; i++)
 			{
-				convertComponents(node.transform.GetChild(i).gameObject, root, converters);
+				convertComponents(node.transform.GetChild(i).gameObject, root, converters, assetName);
 			}
 		}
 

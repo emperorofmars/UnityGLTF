@@ -15,7 +15,7 @@ namespace oap.ava.importer.common
 			return true;
 		}
 		
-        public void convert(GameObject node, GameObject root, Component originalComponent)
+        public void convert(GameObject node, GameObject root, Component originalComponent, string assetName)
         {
 			OAP_STF_twist_constraint s = (OAP_STF_twist_constraint)originalComponent;
             var ret = node.AddComponent<UnityEngine.Animations.RotationConstraint>();

@@ -23,6 +23,7 @@ namespace oap.ava
 		public static void run(GameObject go)
 		{
 			Debug.Log("Running AVA Importers");
+			FolderManager.clean(go.name);
 			foreach(IAVAImporter importer in importerList) // parallelize this
 			{
 				importer.run(go);
@@ -45,11 +46,8 @@ namespace oap.ava
 				}
 				else
 				{
-					Debug.Log("Running AVA Importers");
-					foreach(IAVAImporter importer in importerList) // parallelize this
-					{
-						importer.run((GameObject)AssetDatabase.LoadMainAssetAtPath(path));
-					}
+					GameObject root = (GameObject)AssetDatabase.LoadMainAssetAtPath(path);
+					RegisteredImporters.run(root);
 				}
 			}
 			else
