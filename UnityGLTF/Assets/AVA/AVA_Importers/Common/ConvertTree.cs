@@ -23,7 +23,19 @@ namespace oap.ava.importer.common
 				if(!converters.ContainsKey(key)) converters.Add(key, CommonConverters.getConverter(key));
 			}
 			GameObject targetRoot;
-			if(rootAVA.transform.childCount == 1) targetRoot = Instantiate(rootAVA.transform.GetChild(0).gameObject);
+			if(rootAVA.transform.childCount == 1)
+			{
+				var child = rootAVA.transform.GetChild(0).gameObject;
+				if(child.GetComponent<OAP_true_root>() != null)
+				{
+					targetRoot = Instantiate(child);
+					DestroyImmediate(targetRoot.GetComponent<OAP_true_root>());
+				}
+				else
+				{
+					targetRoot = Instantiate(rootAVA);
+				}
+			}
 			else targetRoot = Instantiate(rootAVA);
 
 			removeTrash(targetRoot);

@@ -42,7 +42,7 @@ namespace oap.ava.importer.common
 				human = mappings.FindAll(mapping => mapping.bone != null && mapping.bone.Length > 0 && mapping.uuid != null && mapping.uuid.Length > 0).Select(mapping => 
 				{
 					var bone = new HumanBone {humanName = mapping.bone, boneName = mapping.uuid};
-					Debug.Log(bone.humanName + " : " + bone.boneName);
+					//Debug.Log(bone.humanName + " : " + bone.boneName);
 					bone.limit.useDefaultValues = true;
 					return bone;
 				}).ToArray()
@@ -55,10 +55,7 @@ namespace oap.ava.importer.common
 				Debug.LogError("Invalid humanoid avatar");
 			}
 			animator.avatar = avatar;
-
-			//var path = FolderManager.AVA_IMPORT_FOLDER + "/" + assetName + "/Common/" + assetName + ".ht";
-
-			//var path = $"Assets/{avatar.name.Replace(':', '_')}.ht";
+			
 			AssetDatabase.CreateAsset(avatar, FolderManager.getCommonFolder(assetName) + "/" + assetName + ".ht");
         }
     }
