@@ -16,12 +16,14 @@ namespace oap.ava.importer.common
 
 		public static GameObject convertTree(GameObject rootAVA, Dictionary<Type, IComponentConverter> appConverters, string assetName)
 		{
-			Dictionary<Type, IComponentConverter> converters = new Dictionary<Type, IComponentConverter>();
+			/*Dictionary<Type, IComponentConverter> converters = new Dictionary<Type, IComponentConverter>();
+			foreach(var item in CommonConverters.getConverters()) converters.Add(item.Key, item.Value);
 			foreach(var item in appConverters) converters.Add(item.Key, item.Value);
 			foreach(var key in CommonConverters.getSupportedTypes())
 			{
 				if(!converters.ContainsKey(key)) converters.Add(key, CommonConverters.getConverter(key));
-			}
+			}*/
+			
 			GameObject targetRoot;
 			if(rootAVA.transform.childCount == 1)
 			{
@@ -37,10 +39,13 @@ namespace oap.ava.importer.common
 				}
 			}
 			else targetRoot = Instantiate(rootAVA);
-
 			removeTrash(targetRoot);
-			convertComponents(targetRoot, targetRoot, converters, assetName);
-			cleanupComponents(targetRoot, targetRoot, converters);
+
+			convertComponents(targetRoot, targetRoot, CommonConverters.getConverters(), assetName);
+			convertComponents(targetRoot, targetRoot, appConverters, assetName);
+
+			cleanupComponents(targetRoot, targetRoot, CommonConverters.getConverters());
+			cleanupComponents(targetRoot, targetRoot, appConverters);
 			return targetRoot;
 		}
 		

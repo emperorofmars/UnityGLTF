@@ -22,6 +22,11 @@ namespace oap.ava.importer.common
 			converters.Add(type, converter);
 		}
 
+		public static Dictionary<Type, IComponentConverter> getConverters()
+		{
+			return converters;
+		}
+
 		public static IComponentConverter getConverter(Type type)
 		{
 			return converters[type];

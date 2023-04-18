@@ -29,14 +29,9 @@ namespace oap.ava.importer.vrc
 			Debug.Log("Running AVA VRChat importer");
 
 			FolderManager.ensureApplicationFolderExists(go.name, IMPORT_FOLDER_VRC);
-			//if(!AssetDatabase.IsValidFolder(FolderManager.AVA_IMPORT_FOLDER + "/" + go.name + "/" + IMPORT_FOLDER_VRC)) AssetDatabase.CreateFolder(FolderManager.AVA_IMPORT_FOLDER + "/" + go.name, IMPORT_FOLDER_VRC);
-			//AssetDatabase.DeleteAsset(FolderManager.AVA_IMPORT_FOLDER + "/" + go.name + "/" + IMPORT_FOLDER_VRC + "/" + go.name + ".prefab");
-			//AssetDatabase.DeleteAsset(FolderManager.getApplicationFolder(go.name, IMPORT_FOLDER_VRC) + "/" + go.name + ".prefab");
 			
-
 			GameObject root = ConvertTree.convertTree(go, converters, go.name);
 
-			//PrefabUtility.SaveAsPrefabAsset(root, FolderManager.AVA_IMPORT_FOLDER  + "/" + go.name + "/" + IMPORT_FOLDER_VRC + "/" + go.name + ".prefab");
 			PrefabUtility.SaveAsPrefabAsset(root, FolderManager.getApplicationFolder(go.name, IMPORT_FOLDER_VRC) + "/" + go.name + ".prefab");
 			DestroyImmediate(root);
 		}

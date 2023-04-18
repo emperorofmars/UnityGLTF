@@ -21,10 +21,6 @@ namespace oap.ava.importer.vrc
 		
         public void convert(GameObject node, GameObject root, Component originalComponent, string assetName)
         {
-			var animator = node.AddComponent<Animator>();
-			animator.applyRootMotion = true;
-			animator.updateMode = AnimatorUpdateMode.Normal;
-			animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
 			var avatarDescriptor = node.AddComponent<VRCAvatarDescriptor>();
         }
     }
