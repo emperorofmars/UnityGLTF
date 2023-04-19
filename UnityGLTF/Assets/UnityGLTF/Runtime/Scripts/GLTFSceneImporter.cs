@@ -781,22 +781,14 @@ namespace UnityGLTF
 					if(ExtensionRegistry.hasExtension(ExtensionType.NODE, extension.Key))
 					{
 						var constructor = ExtensionRegistry.getConstructor(ExtensionType.NODE, extension.Key);
-						await constructor.ConstructComponent(nodeObj, extension.Value, getNode);
+						await constructor.ConstructComponent(nodeObj, extension.Value, _assetCache, getNode);
 						continue;
 					} else {
-						await ExtensionRegistry._defaultExtensionConstructor.ConstructComponent(nodeObj, extension.Value, getNode);
+						await ExtensionRegistry._defaultExtensionConstructor.ConstructComponent(nodeObj, extension.Value, _assetCache, getNode);
 						continue;
 					}
 				}
 			}
-
-			// GLTF Authoring: preserve original index of node
-			if(_options.AuthoringMode)
-			{
-				var authoringInfo = nodeObj.AddComponent<GLTFAuthoringInfo>();
-				authoringInfo.index = nodeIndex;
-			}
-
 
 			nodeObj.SetActive(true);
 

@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityGLTF;
 using System.Threading.Tasks;
 using oap.stf.Components;
+using UnityGLTF.Cache;
 
 namespace oap.stf.Extensions
 {
@@ -62,7 +63,7 @@ namespace oap.stf.Extensions
 	public class Construct_OAP_STF_uuid : IExtensionConstructor {
 		public Construct_OAP_STF_uuid() {}
 
-		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode) {
+		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, AssetCache _assetCache, Func<NodeId, Task<GameObject>> getNode) {
 			OAP_STF_uuid_extension _extension = (OAP_STF_uuid_extension)extension;
 
 			var component = nodeObj.AddComponent<OAP_STF_uuid>();

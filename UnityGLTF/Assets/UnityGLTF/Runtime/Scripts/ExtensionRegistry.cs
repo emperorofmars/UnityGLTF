@@ -3,6 +3,7 @@ using GLTF.Schema;
 using System;
 using UnityEngine;
 using System.Threading.Tasks;
+using UnityGLTF.Cache;
 
 namespace UnityGLTF
 {
@@ -13,14 +14,14 @@ namespace UnityGLTF
 
 	public interface IExtensionConstructor
 	{
-		Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode);
+		Task ConstructComponent(GameObject nodeObj, IExtension extension, AssetCache assetCache, Func<NodeId, Task<GameObject>> getNode);
 	}
 
 	public class DefaultExtensionConstructor : IExtensionConstructor
 	{
 		public DefaultExtensionConstructor() {}
 
-		public Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode)
+		public Task ConstructComponent(GameObject nodeObj, IExtension extension, AssetCache assetCache, Func<NodeId, Task<GameObject>> getNode)
 		{
 			var component = nodeObj.AddComponent<DefaultComponent>();
 			component.json = ((DefaultExtension)extension).getDataAsJsonString();

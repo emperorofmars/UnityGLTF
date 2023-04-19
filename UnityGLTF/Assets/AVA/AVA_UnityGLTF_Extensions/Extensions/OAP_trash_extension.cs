@@ -9,6 +9,7 @@ using UnityEngine;
 using UnityGLTF;
 using System.Threading.Tasks;
 using oap.stf.Components;
+using UnityGLTF.Cache;
 
 namespace oap.stf.Extensions
 {
@@ -56,7 +57,7 @@ namespace oap.stf.Extensions
 	public class Construct_OAP_trash : IExtensionConstructor {
 		public Construct_OAP_trash() {}
 
-		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode) {
+		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, AssetCache _assetCache, Func<NodeId, Task<GameObject>> getNode) {
 			OAP_trash_extension _extension = (OAP_trash_extension)extension;
 
 			var component = nodeObj.AddComponent<OAP_trash>();

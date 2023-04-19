@@ -64,11 +64,7 @@ namespace UnityGLTF
 			}
 		}
 
-		public static AfterImportCallback afterImportCallback;
-
 		[Tooltip("Turn this off to create an explicit GameObject for the glTF scene. A scene root will always be created if there's more than one root node.")]
-		[SerializeField] internal bool _authoringMode = false;
-		[SerializeField] internal bool _afterImportCallback = false;
 		[SerializeField] internal bool _removeEmptyRootObjects = true;
 		[SerializeField] internal float _scaleFactor = 1.0f;
 		[SerializeField] internal int _maximumLod = 300;
@@ -498,9 +494,6 @@ namespace UnityGLTF
 				}
 			}
 #endif
-
-			if(afterImportCallback != null && _afterImportCallback == true)
-				afterImportCallback.afterImport(gltfScene);
 		}
 
 		private const string ColorSpaceDependency = nameof(GLTFImporter) + "_" + nameof(PlayerSettings.colorSpace);
@@ -521,7 +514,6 @@ namespace UnityGLTF
 				AnimationMethod = _importAnimations,
 				AnimationLoopTime = _animationLoopTime,
 				AnimationLoopPose = _animationLoopPose,
-				AuthoringMode = _authoringMode,
 			};
 			using (var stream = File.OpenRead(projectFilePath))
 			{

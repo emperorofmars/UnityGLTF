@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using oap.ava.Components;
 using Newtonsoft.Json;
 using GLTF;
+using UnityGLTF.Cache;
 
 namespace oap.ava.Extensions
 {
@@ -81,7 +82,7 @@ namespace oap.ava.Extensions
 	public class Construct_OAP_AVA_humanoid_mapping : IExtensionConstructor {
 		public Construct_OAP_AVA_humanoid_mapping() {}
 
-		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, Func<NodeId, Task<GameObject>> getNode) {
+		public async Task ConstructComponent(GameObject nodeObj, IExtension extension, AssetCache _assetCache, Func<NodeId, Task<GameObject>> getNode) {
 			OAP_AVA_humanoid_mapping_extension _extension = (OAP_AVA_humanoid_mapping_extension)extension;
 
 			var component = nodeObj.AddComponent<OAP_AVA_humanoid_mapping>();
