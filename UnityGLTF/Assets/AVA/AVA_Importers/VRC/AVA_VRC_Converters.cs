@@ -21,7 +21,10 @@ namespace oap.ava.importer.vrc
 		
         public void convert(GameObject node, GameObject root, Component originalComponent, string assetName)
         {
+			var _component = (OAP_AVA_avatar) originalComponent;
 			var avatarDescriptor = node.AddComponent<VRCAvatarDescriptor>();
+			var head = TreeUtils.findByUUID(root, _component.viewport_parent_uuid);
+			avatarDescriptor.ViewPosition = head.transform.position - root.transform.position + _component.viewport_position;
         }
     }
 

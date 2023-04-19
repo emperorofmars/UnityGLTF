@@ -116,11 +116,14 @@ namespace oap.ava.Extensions
 			var component = nodeObj.AddComponent<OAP_AVA_avatar>();
 			component.avatar_name = _extension.avatar_name;
 			component.avatar_version = _extension.avatar_version;
-			if(_extension.icon != null) component.icon = _assetCache.TextureCache[_extension.icon.Index.Id]?.Texture;
-			foreach(var cache in _assetCache.TextureCache)
+			if(_extension.icon != null)
+			{
+				//ConstructImageBuffer(_extension.icon.Index.Value, _extension.icon.Index.Id);
+			}
+			/*foreach(var cache in _assetCache.TextureCache)
 			{
 				Debug.Log(cache);
-			}
+			}*/
 			component.author = _extension.author;
 			component.license_link = _extension.license_link;
 			component.license = _extension.license;

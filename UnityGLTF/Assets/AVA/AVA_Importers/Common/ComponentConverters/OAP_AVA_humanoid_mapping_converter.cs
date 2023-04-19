@@ -3,7 +3,6 @@
 
 using System.Collections.Generic;
 using oap.ava.Components;
-using oap.stf.Components;
 using UnityEditor;
 using UnityEngine;
 using System.Linq;
@@ -12,6 +11,18 @@ namespace oap.ava.importer.common
 {
     public class OAP_AVA_humanoid_mapping_converter : IComponentConverter
     {
+		private class HumanoidTransformMapping
+		{
+			public HumanoidTransformMapping(string humanoidName, GameObject go)
+			{
+				this.humanoidName = humanoidName;
+				this.go = go;
+			}
+
+			public string humanoidName;
+			public GameObject go;
+		}
+
 		public bool cleanup()
 		{
 			return true;
@@ -30,22 +41,44 @@ namespace oap.ava.importer.common
 				animator.cullingMode = AnimatorCullingMode.CullUpdateTransforms;
 			}
 
-			var mappings = component.mappings.FindAll(mapping => mapping.bone != null && mapping.bone.Length > 0 && mapping.uuid != null && mapping.uuid.Length > 0);
-			foreach(var mapping in mappings)
+			var name_mappings = component.mappings.FindAll(mapping => mapping.bone != null && mapping.bone.Length > 0 && mapping.uuid != null && mapping.uuid.Length > 0);
+			var mappings = new List<HumanoidTransformMapping>();
+			foreach(var mapping in name_mappings)
 			{
-				mapping.uuid = TreeUtils.findByUUID(root, mapping.uuid).name;
-				mapping.bone = component.translateHumanoidAVAtoUnity(mapping.bone, component.locomotion_type);
+				var humanName = component.translateHumanoidAVAtoUnity(mapping.bone, component.locomotion_type);
+				var go = TreeUtils.findByUUID(root, mapping.uuid);
+				if(humanName != null && humanName.Length > 0 && go != null) mappings.Add(new HumanoidTransformMapping(humanName, go));
 			}
+			/*var hips = mappings.Find(m => m.humanoidName == "Hips");
+			var armature = hips.go.transform.parent;
+			var transforms = armature.GetComponentsInChildren<Transform>();*/
 
 			var humanDescription = new HumanDescription
 			{
-				human = mappings.FindAll(mapping => mapping.bone != null && mapping.bone.Length > 0 && mapping.uuid != null && mapping.uuid.Length > 0).Select(mapping => 
+				/*skeleton = transforms.Select(t =>
 				{
-					var bone = new HumanBone {humanName = mapping.bone, boneName = mapping.uuid};
+					var sb = new SkeletonBone();
+					sb.name = t.name;
+					sb.position = t.localPosition;
+					sb.rotation = t.localRotation;
+					sb.scale = t.localScale;
+					Debug.Log(sb.name);
+					return sb;
+				}).Append(new SkeletonBone
+				{
+					name = armature.name,
+					position = Vector3.zero,
+					rotation = Quaternion.identity,
+					scale = Vector3.one
+				}).ToArray(),*/
+				human = mappings.Select(mapping => 
+				{
+					var bone = new HumanBone {humanName = mapping.humanoidName, boneName = mapping.go.name};
 					//Debug.Log(bone.humanName + " : " + bone.boneName);
 					bone.limit.useDefaultValues = true;
 					return bone;
 				}).ToArray()
+				//not handling all the rest here as its unity specific for now
 			};
 
 			var avatar = AvatarBuilder.BuildHumanAvatar(root, humanDescription);
